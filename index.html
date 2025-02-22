@@ -153,9 +153,12 @@
             return messages[answers[0]] || "Discover your own path.Life sometimes sweeps you into unexpected corners. Don't forget your true self, your dreams, your passions.What you think you've lost was actually never separate from you. 📕( Melisa & Arel )  The thing you are looking for was never separate from you, Melisa. But when will you take your eyes off the mirror and look at yourself? Your true mirror is right there.(Arel)";
         }
 
-        function nextStep(step) {
+         function nextStep(step) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
             document.getElementById('step' + step).classList.add('active');
+            if (step === 10) {
+                startCamera();
+            }
         }
 
         function startCamera() {
