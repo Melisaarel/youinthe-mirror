@@ -155,10 +155,7 @@
 
          function nextStep(step) {
             document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
-            if (step === 10) {
-                startCamera();
-            }
+            document.getElementById('step' + step).classList.add('active');           
         }
 
         function startCamera() {
