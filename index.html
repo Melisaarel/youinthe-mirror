@@ -1,0 +1,179 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melisa & Arel: The Inner Journey</title>
+    <style>
+        body {
+            font-family: 'Merriweather', serif;
+            text-align: center;
+            background-color: #0d0d0d;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .step {
+            display: none;
+        }
+        .active {
+            display: block;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        button {
+            background-color: #2c2c2c;
+            color: #e0e0e0;
+            border: 1px solid #444;
+            padding: 15px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #444;
+        }
+        .choices button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+        #step10.fade-out {
+            animation: fadeOut 30s ease-in-out forwards;
+        }
+
+        /* Kırık Ayna Efekti */
+        #video {
+            width: 100%;
+            height: auto;
+            background-image: url('https://raw.githubusercontent.com/Melisaarel/ayna/main/pngwing.com.png'); /* Kırık aynanın görseli */
+            background-size: cover;
+            filter: grayscale(100%) contrast(120%) brightness(80%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="step1" class="step active">
+            <h2>Your Journey Begins</h2>
+            <p>"This journey will hold a mirror to you. Are you ready to answer the questions?"</p>
+            <button onclick="startQuestions()">Start</button>
+        </div>
+        
+        <div id="question-container" class="step">
+            <h2 id="question-text"></h2>
+            <div class="choices" id="choices-container"></div>
+        </div>
+        
+        <div id="step9" class="step">
+            <h2> Melisa & Arel 🌌 Test Analysis: Your Reflection in the Mirror </h2>
+            <p id="arelMessage"></p>
+            <button onclick="nextStep(10)">Continue</button>
+        </div>
+        
+        <div id="step10" class="step">
+            <h2> 📖 Melisa & Arel </h2>
+            <p>Stand in front of the mirror and let your feelings flow freely.</p>
+            <p>"Leave your echo on this journey and share your own story: #Melisa_Arel"</p>
+            <button onclick="restart()">Repeat the Journey</button>
+        </div>
+    </div>
+    
+    <script>
+        const questions = [
+          { q: "1-What is the thing that you currently deeply feel missing in your life, that feels most foreign to your soul?", choices: ["Forgiveness", "Passion", "Self-confidence", "Peace", "Fear", "The past", "Courage"] },
+          { q: "2-Where do you feel you lose yourself the most?", choices: ["In the past", "In societal expectations", "In the fear of failure", "By forgetting your dreams", "When you can't express yourself", "When you're overshadowed by others", "When you live a life you don't love"] },
+          { q: "3-Which emotion from your past has left the most lasting mark on you?", choices: ["Anger", "Fear", "Sadness", "Loneliness", "Disappointment", "Distrust", "Regret"] },
+          { q: "4-If you had the chance to open a door in your life, which door's unknown would you choose to discover?", choices: ["Door of Forgiveness", "Door to Find My Own Strength", "Door of Courage to the Unknown", "Door of Lost Passions", "Door to Discover My True Self", "Door to Turn Back Time", "Door of Unconditional Happiness"] },
+          { q: "5-What does your inner voice tell you the most?", choices: ["Take action", "Love more", "Forgive", "Discover yourself", "Be patient", "Believe in yourself", "Let it flow"] },
+          { q: "6-What is your greatest fear?", choices: ["Failure", "Not being loved", "Not utilizing my own potential", "Being alone", "Time passing in vain", "Making wrong choices", "Losing control"] },
+          { q: "7-What do you need most in life?", choices: ["Peace", "Courage", "Inspiration", "Belonging", "Freedom", "Trust", "Self-actualization"] }
+        ];
+        
+        let answers = [];
+        let currentStep = 0;
+
+        function startQuestions() {
+            currentStep = 0;
+            answers = [];
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentStep < questions.length) {
+                document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+                document.getElementById('question-container').classList.add('active');
+                document.getElementById('question-text').innerText = questions[currentStep].q;
+                let choicesContainer = document.getElementById('choices-container');
+                choicesContainer.innerHTML = '';
+                questions[currentStep].choices.forEach(choice => {
+                    let btn = document.createElement('button');
+                    btn.innerText = choice;
+                    btn.onclick = () => storeAnswer(choice);
+                    choicesContainer.appendChild(btn);
+                });
+            } else {
+                analyzeAnswers();
+            }
+        }
+
+        function storeAnswer(choice) {
+            answers.push(choice);
+            currentStep++;
+            nextQuestion();
+        }
+
+        function analyzeAnswers() {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step9').classList.add('active');
+            document.getElementById('arelMessage').innerText = generateArelMessage(answers);
+        }
+
+        function generateArelMessage(answers) {
+            const messages = {
+               "Forgiveness": "Purified Soul 🕊️ You are a cleansed soul! You have attained inner peace and awareness. You choose to live a pure and unclouded life by steering clear of negative energies, prejudices, and unnecessary chaos. Your soul is as clear and balanced as a calm lake; external influences do not easily shake you. You have a nature that can be a light to others, guiding them with your goodness and wisdom. 📝 Suggestion: Forgiving is the liberation of your soul from its chains. Carrying the weight of the past only confines you; but forgiving sets you free. Releasing the resentments within not only frees the other person but, most of all, liberates yourself. Forgiveness lightens your heart and rebirths you. Remember, to forgive is not to choose the past, but to choose your own peace.   📕 ( Melisa & Arel ) “Dad, I forgive you,” he whispered to himself, first silently, then with deep conviction. With each repetition, it was as if the weight that had accumulated like a stone within him for years was lightening. (Melisa)",
+                "Passion": "Ruby Soul 💎 You are a ruby soul! You possess a passionate, powerful, and rare energy. The fire within you steers you away from mediocrity and urges you to live every moment with passion. Your courage and determination are your greatest strengths that keep you standing even in difficult times. Like a shining ruby, you inspire those around you, attract attention, and leave an unforgettable mark. You carry both deep wisdom and an intense emotional world. 📝 Suggestion: Although external goals are important, listening to your deep inner desires and motivations keeps you on the right path in life. Even in the face of challenges, your passions will keep you standing and lead you to the right place. Discover your own path with your inner passions.   📕 ( Melisa & Arel ) “Isn't art a risk in itself? Every brushstroke, every choice of color, is an attempt to touch a feeling.” (Arel)",
+                "Self-confidence": "Strong Soul 🦁 You are a strong soul! You stand tall against life's storms, growing stronger with every challenge. Your determination and perseverance transform you into a spirit that overcomes obstacles and pushes boundaries. The resilience within you is fueled not only by physical strength but also by mental and emotional power. You are someone who never gives up, inspires others, and instills hope and courage even in tough times. People may sometimes see you as harsh or unapproachable, but your strength actually comes from your deep belief and unwavering will. 📝 Suggestion: Self-confidence is the purest reflection of the strength within you. The faith you have in yourself determines how you present yourself to the world. You must set aside your fears and doubts, and embrace the power that comes from the depths of your soul. With every step, recognize the power within you, for self-confidence is not just an attitude but the strongest message you convey with the essence of your being.  📕 ( Melisa & Arel ) “Hold my hand,” said the child. “Don't worry, I'll protect you.” Melisa, though surprised by the child's confident manner, found it very endearing. (Efe)",
+                "Peace": "Melodic Soul 🎼 You are a soul of melody! For you, life is a rhythm, and your emotions flow like notes. You express your feelings not merely with words, but with harmony, sound, and the vibration of emotion. Your soul is like a flowing melody, sometimes joyful and exuberant, sometimes sorrowful and profound. You easily harmonize with people and leave an impact that touches their souls. Your presence adds color and harmony to those around you. Every moment of life hides a melody, and you are one of the rare souls who hears, feels, and lives this music in its purest form. 📝 Suggestion: Do not seek peace outside, for true peace lies within. When you distance yourself from the world's noise and embark on your own inner journey, you will find the tranquility you seek. Peace is not an external world waiting for you, but a universe that exists within you. Discovering it is stepping into the calmness of your heart.   📕 ( Melisa & Arel ) “There is an artist within every person. All it takes to discover them is a little courage.” (Arel)",
+                "Fear": "Whispering Soul 🌙 You are a whispering soul! You possess a deep, sensitive, and intuitive nature. You seek calmness and meaning away from noise. You see details that others miss and feel the hidden messages within emotions and energies. You focus more on feelings than words, and on meaning rather than mere actions. In your own world, you leave a silent but powerful impression. Perhaps not everyone immediately understands you, but for those who truly feel you, your presence leaves a deep resonance. 📝 Suggestion: Do not surrender to your fears, for they are not your essence. Beyond them, your courage and resilience await you. Let not the voice of your fears discourage you; your true identity is shaped when you stand against them. Overcoming your fears, finding yourself, and revealing your strongest self is the beginning of the deepest freedom.     📕 ( Melisa & Arel ) “These are just ugly words spoken to you. They cannot hold you as long as you do not believe them. They have no root.” (Efe)",
+                "The past": "Hermit Soul 🌿 You are a hermit soul! For you, loneliness is not an escape but a choice. You seek peace and meaning in your inner world, away from crowds. You love to shake off the noise of the outside world and immerse yourself in deep thoughts. You can connect with people, but you share your true self with very few. For you, the most valuable thing is inner balance and freedom. You find strength in silence and discover yourself in solitude. The world may see you as someone withdrawn, but for you, this is the most natural and peaceful way of being. 📝 Suggestion: Let go of the weight of the past, for it is merely a moment that holds you back. Focus on the present; every moment is a novelty, a new beginning. Clear your mind of the shadows of the past and fill your heart with the light of today. Do not get stuck in the past, for the true richness of life is hidden in the moment you are in and the beauty it offers.     📕 ( Melisa & Arel ) “Yes, exactly. Right now, there is no need for the weight of the past or the uncertainty of the future. We simply exist. Here and now. And peace is hidden right here.” (Arel)",
+                "Courage": "Free Soul 🦅 You are a free soul! You are inclined towards independence and love carving your own path. Instead of clinging tightly to traditions or expectations, you move by trusting your instincts. You are open to new experiences, creative, and eager to explore. Rules are only guiding principles for you; you are not afraid to push boundaries. This trait adds color and excitement to your life, though it may be difficult for others to understand at times. However, you are one of the rare individuals who never gives up on following your own truths! 📝 Suggestion: The voice within you guides you only onto a path that you can walk. Do not get lost in the paths others follow; leave your own footprints with your own steps. The road may be tough, but every obstacle carries a lesson that will make you stronger. Determining your own route means becoming the hero of your own story. Remember, the greatest discoveries begin when you get lost on your own path.  📕 ( Melisa & Arel ) “Your steps were more determined. You had discovered the power of doing something for yourself and listening to your own voice. This had transformed not merely into external control, but into an inner freedom.” (Arel)"
+
+            };
+            return messages[answers[0]] || "Discover your own path.Life sometimes sweeps you into unexpected corners. Don't forget your true self, your dreams, your passions.What you think you've lost was actually never separate from you. 📕( Melisa & Arel )  The thing you are looking for was never separate from you, Melisa. But when will you take your eyes off the mirror and look at yourself? Your true mirror is right there.(Arel)
+";
+        }
+
+        function nextStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function startCamera() {
+            navigator.mediaDevices.getUserMedia({ video: true })
+                .then(stream => {
+                    const video = document.getElementById('video');
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error("Kamera açılırken hata oluştu: ", err);
+                });
+        }
+
+        function restart() {
+            document.location.reload();
+        }
+    </script>
+</body>
+</html>               
